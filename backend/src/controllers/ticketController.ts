@@ -44,6 +44,8 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
         ticket.totalPrice = event.data.object.amount_total
         ticket.status = "paid"
 
+        await ticket.save()
+
         const eventDoc = await Event.findById(event.data.object.metadata?.eventId)
         if(!eventDoc) {
             res.status(404)
@@ -54,7 +56,6 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
 
         eventDoc.soldTickets += quantity
 
-        await ticket.save()
         await eventDoc.save()
 
     }
