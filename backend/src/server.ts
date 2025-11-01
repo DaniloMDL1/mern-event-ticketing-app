@@ -9,11 +9,12 @@ import userRoutes from "./routes/userRoutes"
 import eventRoutes from "./routes/eventRoutes"
 import ticketRoutes from "./routes/ticketRoutes"
 import adminRoutes from "./routes/adminRoutes"
+import { stripeWebhookHandler } from "./controllers/ticketController"
 
 const app = express()
 
 // webhook
-app.use("/api/tickets/checkout/webhook", express.raw({ type: "*/*" }))
+app.post("/api/tickets/checkout/webhook", express.raw({ type: "application/json" }), stripeWebhookHandler)
 
 app.use(express.json({ limit: "10mb" }))
 app.use(express.urlencoded({ extended: true, limit: "10mb" }))
