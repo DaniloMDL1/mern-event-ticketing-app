@@ -41,10 +41,6 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
             throw new Error("Ticket not found")
         }
 
-        console.log(event.data.object)
-
-        console.log(event.data.object?.amount_total)
-
         ticket.totalPrice = event.data.object.amount_total
         ticket.status = "paid"
 
