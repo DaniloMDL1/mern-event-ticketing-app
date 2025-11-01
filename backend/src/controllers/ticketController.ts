@@ -33,6 +33,8 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
         return res.status(400).json({ message: `Webhook error: ${error.message}`})
     }
 
+    console.log(event)
+
     if(event.type === "checkout.session.completed") {
 
         const ticket = await Ticket.findById(event.data.object.metadata?.ticketId)
@@ -40,6 +42,8 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
             res.status(404)
             throw new Error("Ticket not found")
         }
+
+        console.log(event.data.object)
 
         ticket.totalPrice = event.data.object.amount_total
         ticket.status = "paid"
